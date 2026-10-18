@@ -72,7 +72,7 @@ cd samavya
 cp .env.example .env
 
 
-Add the required database settings and AI API credentials to `.env`. Never commit secrets.
+Add the required database settings and AI API credentials to `.env`. 
 
 8)Start the application:
 
