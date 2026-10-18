@@ -1,0 +1,18 @@
+
+services:
+  postgres:
+    image: postgis/postgis:17-3.5
+    platform: linux/amd64
+    container_name: samavya-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: samavya
+      POSTGRES_USER: samavya_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - samavya_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  samavya_postgres_data:
