@@ -51,45 +51,46 @@ flowchart
     F --- G[NVIDIA Nemotron]
 
 
-The AI interprets user intent and helps plan actions. The Spring Boot backend validates permissions, availability, booking state, and confirmations before changing application data.
+The separate FastAPI service currently extracts intent using Nebius Token Factory
+and NVIDIA Nemotron. It does not call the backend or access marketplace data.
+The Spring Boot backend remains authoritative for authentication, authorization,
+marketplace data, and any future state changes.
 
 5)Getting started
 
 5.1)Prerequisites
 
 - Git
-- Docker Desktop with Docker Compose
-- A Nebius Token Factory API key with access to the configured NVIDIA Nemotron model
+- Docker Desktop with Docker Compose for the local PostgreSQL/PostGIS database
+- Java 21 for the Spring Boot backend
+- Python 3.11 or newer for the AI service
+- A Nebius Token Factory API key with access to a listed NVIDIA Nemotron model
 
 6)Installation
 
 git clone <REPOSITORY_URL>
 cd samavya
 
+7)Configure and start the backend/database by following
+[`backend/README.md`](backend/README.md). The Compose file starts PostgreSQL;
+the backend is started separately.
 
-7)Configure the environment:
+8)Configure and run the independent AI service using
+[`ai-service/README.md`](ai-service/README.md). Its tests use mocked model
+responses and do not require a Nebius API key. The frontend is not yet connected
+to this service.
 
-cp .env.example .env
+9)Configuration
 
-
-Add the required database settings and AI API credentials to `.env`. 
-
-8)Start the application:
-
-
-docker compose up --build
-Open the application at the local URL specified in the deployment configuration.
-See [`docs/SETUP.md`](docs/SETUP.md) for detailed configuration, database initialization, troubleshooting, and any required model settings.
-
-9)Environment variables
-
-See [`.env.example`](.env.example) for the complete list of supported configuration variables. These may include database connection settings, the Nebius API key, the model identifier, and internal service URLs.
+Backend and AI-service environment variables are configured separately. See
+[`backend/README.md`](backend/README.md) and
+[`ai-service/README.md`](ai-service/README.md); do not put secrets in frontend
+configuration or commit local `.env` files.
 
 10)Testing
 
-Run the relevant test suites using the commands documented in [`docs/SETUP.md`](docs/SETUP.md).
-
-The project includes tests for backend business logic, AI service behavior, and end to end user flows.
+For AI-service tests, run `python -m pytest` from `ai-service/`. For backend
+build and test commands, see [`backend/README.md`](backend/README.md).
 
  Repository structure
 
@@ -97,11 +98,7 @@ samavya/
 ├── frontend/           Conversational UI
 ├── backend/            Core APIs and business logic
 ├── ai-service/         AI orchestration and inference
-├── database/           Migrations and seed data
-├── docs/               Setup and technical documentation
-├── docker-compose.yml
-├── .env.example
-├── LICENSE
+├── infra/              Compose configuration and SQL migrations
 └── README.md
 
 

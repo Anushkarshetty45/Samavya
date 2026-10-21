@@ -94,9 +94,65 @@ authenticated user has an ACTIVE membership. There is no endpoint to self-assign
 PROVIDER or administrative roles. Authentication and authorization failures
 return the shared JSON error shape with 401 or 403 status codes.
 
+## Provider profiles, offerings, and gigs
+
+All provider-management endpoints require a bearer token. The user ID is
+derived from the token; none of the write DTOs accept provider or user IDs.
+Profiles are created with `PENDING` verification status and clients cannot
+change verification status. Offering writes and gig writes require active
+membership in the offering's community. Provider-owned resources belonging to
+another account are returned as 404.
+
+- `POST /api/provider-profile/me` creates the caller's profile, or returns the
+  existing profile if one already exists. Accepts optional `description` and
+  `available`; the latter defaults to true on first creation.
+- `GET /api/provider-profile/me` retrieves the caller's profile.
+- `PUT /api/provider-profile/me` updates `description` and required `available`;
+  verification status is read-only.
+- `POST /api/provider-services` accepts `communityId`, `categoryId`, and
+  nullable `priceFrom`. The caller must have a provider profile, active
+  community membership, and the service category must be active.
+- `GET /api/provider-services/me` lists the caller's offerings.
+- `PUT /api/provider-services/{offeringId}` replaces `priceFrom` and required
+  `active`; setting `active` false deactivates the offering. The existing
+  provider/community/category unique constraint is preserved and duplicates
+  return 409.
+- `POST /api/provider-services/{offeringId}/gigs` creates a gig with `title`,
+  optional `description`, `pricingType`, and `price`. FIXED and HOURLY require
+  a nonnegative price; QUOTE requires a null price.
+- `GET /api/gigs/me` lists the caller's gigs; `GET /api/gigs/{gigId}` retrieves
+  one owned gig; `PUT /api/gigs/{gigId}` updates its title, description, pricing
+  type, and price while it is not closed.
+- `POST /api/gigs/{gigId}/pause` transitions ACTIVE to PAUSED;
+  `/resume` transitions PAUSED to ACTIVE; `/close` transitions ACTIVE or PAUSED
+  to terminal CLOSED. Invalid transitions return 409.
+
+## Community requirements
+
+Requirements are stored in the existing `requirements` table; no schema
+migration is needed. Every requirements route requires a bearer token and
+ACTIVE community membership. A service requirement must reference an active
+service category; product and rental requirements must not include a service
+category. Optional quantity and budget values follow the database's positive
+quantity and nonnegative budget checks.
+
+- `POST /api/communities/{communityId}/requirements` accepts `type`,
+  `serviceCategoryId` (SERVICE only), `title`, optional `description`,
+  `quantity`, `quantityUnit`, `budget`, and `neededBy`. The authenticated user
+  becomes `createdBy`; any client-supplied creator field is ignored.
+- `GET /api/communities/{communityId}/requirements?type=SERVICE|PRODUCT|RENTAL`
+  lists the community's requirements, optionally filtered by type.
+- `GET /api/requirements/{requirementId}` retrieves a requirement only for an
+  active member of its community.
+- `POST /api/requirements/{requirementId}/cancel` cancels an OPEN requirement
+  only when called by its creator. Missing records return 404, membership or
+  ownership failures return 403, invalid input returns 400, and invalid state
+  transitions return 409.
+
 ## Tests
 
 `.\mvnw.cmd test` runs unit and controller tests, plus category and marketplace
-and authentication/community integration tests against disposable PostGIS
-Testcontainers databases when a Docker engine supported by Testcontainers is
-available. Those tests do not connect to or migrate the local Compose database.
+and authentication/community/requirements integration tests against disposable
+PostGIS Testcontainers databases when a Docker engine supported by
+Testcontainers is available. Those tests do not connect to or migrate the
+local Compose database.
