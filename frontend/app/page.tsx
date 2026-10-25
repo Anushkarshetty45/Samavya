@@ -1,69 +1,120 @@
-import Image from "next/image";
+
+const navigation = ["Home", "Services", "Marketplace", "Communities", "About"];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <main className="home-page">
+      <div className="hero-scene">
+        <div className="light-panel" aria-hidden="true" />
+        <div className="plant-shadow" aria-hidden="true" />
+        <div className="floor-light" aria-hidden="true" />
+
+        <header className="navbar">
+          <a className="brand" href="/" aria-label="Samavya home">
+            <svg
+              className="brand-mark"
+              viewBox="0 0 40 44"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path d="M20 40V19C20 9 12 3 3 3C3 16 8 25 20 28" />
+              <path d="M20 40V19C20 9 28 3 37 3C37 16 32 25 20 28" />
+              <path d="M20 40V25" />
+            </svg>
+            <span>Samavya</span>
+          </a>
+
+          <nav className="nav-links" aria-label="Main navigation">
+            {navigation.map((item) => (
+              <a
+                key={item}
+                href={item === "Home" ? "/" : `#${item.toLowerCase()}`}
+                className={item === "Home" ? "nav-link active" : "nav-link"}
+              >
+                {item}
+              </a>
+            ))}
+          </nav>
+
+          <div className="nav-actions">
+            <a className="search-link" href="#services" aria-label="Search">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="10.8" cy="10.8" r="6.8" />
+                <path d="m16 16 5 5" />
+              </svg>
+            </a>
+            <span className="nav-divider" />
+            <a className="login-link" href="/login">Log in</a>
+            <a className="button button-yellow signup-button" href="/signup">
+              Sign up <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </header>
+
+        <div className="section-index" aria-hidden="true">
+          <span className="index-current">01</span>
+          <span className="index-line" />
+          <span>02</span>
+          <span>03</span>
+        </div>
+
+        <section className="hero-content" aria-labelledby="hero-heading">
+          <div className="eyebrow">
+            <span>NEIGHBOURS</span>
+            <span>SERVICES</span>
+            <span>OPPORTUNITIES</span>
+            <span className="eyebrow-second">A STRONGER TOMORROW</span>
+          </div>
+
+          <h1 id="hero-heading">
+            Your community,
+            <br />
+            <em>all in one place.</em>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+
+          <p className="hero-description">
+            Find trusted local services, buy and rent from your
+            neighbourhood, join group buys, and stay connected
+            with your community.
           </p>
+
+          <div className="hero-actions">
+            <a className="button button-yellow" href="/signup">
+              Get started <span aria-hidden="true">→</span>
+            </a>
+            <a className="button button-outline" href="#services">
+              Explore services
+            </a>
+          </div>
+        </section>
+
+        <div className="scene-caption">
+          <span>LOCAL SERVICES</span>
+          <span className="caption-separator">|</span>
+          <span>MARKETPLACE</span>
+          <span className="caption-separator">|</span>
+          <span>GROUP BUYING</span>
+          <span className="caption-separator">|</span>
+          <span>RENT &amp; SHARE</span>
+          <div className="caption-rule" />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+
+        <a className="scroll-cue" href="#services" aria-label="Scroll to services">
+          <span className="scroll-circle">
+            <span aria-hidden="true">↓</span>
+          </span>
+          <span className="scroll-line" />
+        </a>
+      </div>
+
+      <section id="services" className="next-section">
+        <span className="next-eyebrow">BUILT AROUND YOUR NEIGHBOURHOOD</span>
+        <h2>Everything local, a little closer.</h2>
+        <p>
+          Discover services, share resources, and find opportunities
+          within the communities around you.
+        </p>
+      </section>
+    </main>
   );
 }
