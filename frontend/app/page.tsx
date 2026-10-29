@@ -1,63 +1,20 @@
-
-const navigation = ["Home", "Services", "Marketplace", "Communities", "About"];
+import Link from "next/link";
+import QuietMechanic from "./components/QuietMechanic";
+import SiteHeader from "./components/SiteHeader";
+import ServicesScene from "./components/ServicesScene";
+import ServicesIndex from "./components/ServicesIndex";
+import ServicesAside from "./components/ServicesAside";
+import MarketplaceScene from "./components/MarketplaceScene";
+import CommunitiesScene from "./components/CommunitiesScene";
+import AboutScene from "./components/AboutScene";
 
 export default function Home() {
   return (
     <main className="home-page">
-      <div className="hero-scene">
-        <div className="light-panel" aria-hidden="true" />
-        <div className="plant-shadow" aria-hidden="true" />
-        <div className="floor-light" aria-hidden="true" />
+      <SiteHeader />
 
-        <header className="navbar">
-          <a className="brand" href="/" aria-label="Samavya home">
-            <svg
-              className="brand-mark"
-              viewBox="0 0 40 44"
-              fill="none"
-              aria-hidden="true"
-            >
-              <path d="M20 40V19C20 9 12 3 3 3C3 16 8 25 20 28" />
-              <path d="M20 40V19C20 9 28 3 37 3C37 16 32 25 20 28" />
-              <path d="M20 40V25" />
-            </svg>
-            <span>Samavya</span>
-          </a>
-
-          <nav className="nav-links" aria-label="Main navigation">
-            {navigation.map((item) => (
-              <a
-                key={item}
-                href={item === "Home" ? "/" : `#${item.toLowerCase()}`}
-                className={item === "Home" ? "nav-link active" : "nav-link"}
-              >
-                {item}
-              </a>
-            ))}
-          </nav>
-
-          <div className="nav-actions">
-            <a className="search-link" href="#services" aria-label="Search">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <circle cx="10.8" cy="10.8" r="6.8" />
-                <path d="m16 16 5 5" />
-              </svg>
-            </a>
-            <span className="nav-divider" />
-            <a className="login-link" href="/login">Log in</a>
-            <a className="button button-yellow signup-button" href="/signup">
-              Sign up <span aria-hidden="true">↗</span>
-            </a>
-          </div>
-        </header>
-
-        <div className="section-index" aria-hidden="true">
-          <span className="index-current">01</span>
-          <span className="index-line" />
-          <span>02</span>
-          <span>03</span>
-        </div>
-
+      {/* ============================ SCENE 01,FOLIAGE HERO ============================ */}
+      <div className="hero-scene" data-nav-tone="dark">
         <section className="hero-content" aria-labelledby="hero-heading">
           <div className="eyebrow">
             <span>NEIGHBOURS</span>
@@ -79,11 +36,12 @@ export default function Home() {
           </p>
 
           <div className="hero-actions">
-            <a className="button button-yellow" href="/signup">
-              Get started <span aria-hidden="true">→</span>
+            <a className="hero-cta hero-cta-primary" href="/signup">
+              <span>Start a conversation</span>
+              <span className="hero-cta-rule" aria-hidden="true" />
             </a>
-            <a className="button button-outline" href="#services">
-              Explore services
+            <a className="hero-cta hero-cta-ghost" href="#interstitial">
+              <span>See how it works</span>
             </a>
           </div>
         </section>
@@ -99,7 +57,7 @@ export default function Home() {
           <div className="caption-rule" />
         </div>
 
-        <a className="scroll-cue" href="#services" aria-label="Scroll to services">
+        <a className="scroll-cue" href="#interstitial" aria-label="Scroll to how it works">
           <span className="scroll-circle">
             <span aria-hidden="true">↓</span>
           </span>
@@ -107,14 +65,58 @@ export default function Home() {
         </a>
       </div>
 
-      <section id="services" className="next-section">
-        <span className="next-eyebrow">BUILT AROUND YOUR NEIGHBOURHOOD</span>
-        <h2>Everything local, a little closer.</h2>
-        <p>
-          Discover services, share resources, and find opportunities
-          within the communities around you.
-        </p>
-      </section>
+      {/* ============================ SCENE 02,THE QUIET MECHANIC ============================ */}
+      <QuietMechanic />
+
+      {/* ============================ SCENE 03,SERVICES SPREAD ============================ */}
+      <ServicesScene>
+        <div className="services-spread">
+          <ServicesAside />
+          <ServicesIndex />
+        </div>
+      </ServicesScene>
+
+      {/* ============================ SCENE 04,MARKETPLACE "SHARED LOCALLY" ============================ */}
+      <MarketplaceScene />
+
+      {/* ============================ SCENE 05,COMMUNITIES ============================ */}
+      <CommunitiesScene />
+
+      {/* ============================ SCENE 06,ABOUT ============================ */}
+      <AboutScene />
+
+      {/* ============================ FOOTER ============================ */}
+      <footer className="site-footer">
+        <div className="footer-grid">
+          <Link className="brand" href="/" aria-label="Samavya home">
+            <svg
+              className="brand-mark"
+              viewBox="0 0 40 44"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path d="M20 40V19C20 9 12 3 3 3C3 16 8 25 20 28" />
+              <path d="M20 40V19C20 9 28 3 37 3C37 16 32 25 20 28" />
+              <path d="M20 40V25" />
+            </svg>
+            <span>Samavya</span>
+          </Link>
+          <nav className="footer-nav" aria-label="Footer">
+            <a href="#services">Services</a>
+            <a href="#marketplace">Marketplace</a>
+            <a href="#communities">Communities</a>
+            <a href="#about">About</a>
+            <Link href="/privacy">Privacy</Link>
+            <Link href="/terms">Terms</Link>
+          </nav>
+          <p className="footer-tag">
+            Bringing community needs and local services together,<br />
+            one conversation at a time.
+          </p>
+        </div>
+        <div className="footer-rule" />
+        <p className="footer-fine">Samavya · 2026</p>
+      </footer>
     </main>
   );
 }
